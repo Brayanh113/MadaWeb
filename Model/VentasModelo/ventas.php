@@ -10,6 +10,7 @@ class Ventas{
 	private $IdEstadoPedido;
 	private $IdUsuario;
 	private $Anulado;
+	private $Observacion;
 
 	public function __construct(){}
 
@@ -41,6 +42,9 @@ class Ventas{
 	public function setIdDetallePedido($IdDetallePedido){
 		$this -> IdDetallePedido = $IdDetallePedido;
 	}
+	public function setObservacion($Observacion){
+		$this -> Observacion = $Observacion;
+	}
 
 	//GETTES
 	public function getIdPedido(){
@@ -68,7 +72,10 @@ class Ventas{
 		return $this -> Anulado;
 	}
 	public function getIdDetallePedido(){
-		return $this ->IdDetallePedido;
+		return $this -> IdDetallePedido;
+	}
+	public function getObservacion(){
+		return $this -> Observacion;
 	}
 
  

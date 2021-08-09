@@ -16,11 +16,10 @@ class ControladorUsuarios{
 	public function estadoPedido($IdUsuario){
 		$crudCliente = new CrudUsuarios();
 		$salida =$crudCliente -> estadoPedido($IdUsuario); 
-		echo $salida;
+		return $salida;
 
 	}
 	
-
 	public function registrarUsuario($Nombre,$Apellido,$Documento,$Direccion,$Telefono,$Correo,$Contrasena,$Estado,$IdRol){
 
 		$usuarios = new Usuarios();
@@ -50,9 +49,7 @@ class ControladorUsuarios{
 
     	$usuarios = new Usuarios();
     	$usuarios -> setIdUsuario($IdUsuario);
-
 		$usuarios -> setEstado($Estado);
-		// $usuarios -> setIdRol($IdRol);
 		
 		$CrudUsuarios = new CrudUsuarios();
 	    $CrudUsuarios -> actualizarUsuario($usuarios);
@@ -66,13 +63,6 @@ class ControladorUsuarios{
 }
 
 $ControladorUsuarios = new ControladorUsuarios();
-
-//Redirigir paginas
-
-// if(isset($_GET['registrarUsuario'])){
-// 	header('Location:../Vista/admiClientesNuevo.php');
-// }
-
 
 // Registrar, Modificar, Actualizar, Eliminar
 
@@ -88,11 +78,6 @@ if(isset($_POST['estadoPedido'])){
 	$ControladorUsuarios -> estadoPedido($_POST['IdUsuario']);
 
 }
-
-// if(isset($_POST['eliminarUsuario'])){
-// 	$ControladorUsuarios -> eliminarUsuario($_POST['IdUsuario']);
-// }
-
 
 ?>
 

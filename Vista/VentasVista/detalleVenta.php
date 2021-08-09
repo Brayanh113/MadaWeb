@@ -2,6 +2,7 @@
     include "../../Controller/VentasControlador/ControladorVentas.php";
     $detalle = $ControladorVentas->listarDetalleVenta($_GET['IdPedido']);
     $detalleV = $ControladorVentas->listarProductosVendidos($_GET['IdPedido']);
+    $anulados = $ControladorVentas->listarProductosAnulados($_GET['IdPedido']);
 
 ?>
 
@@ -199,13 +200,12 @@
                                     <button type="submit" id="factura" name="factura" class="btn btn-success">Generar Factura</button>
  
                                 </form>
-                                	
-                                    <!-- <button type="button" class="btn btn-success" id="factura" name="factura" onclick="factura(<?php echo $detalle['IdPedido'];?>)">Generar Factura</button> -->
                                      
                                 </div>
                                 <!-- Factura -->
 
 
+                                <!-- Estado -->
                                 <div class="form-group col-md-2">
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -239,6 +239,7 @@
                                                             <option value="4">Enviado</option>
                                                         </select>
                                                         <input type="hidden" name="idPedido" id="idPedido" value="<?php echo $detalle['IdPedido'];?>">
+
                                                     <?php           
                                                     } else {
                                                         echo'<div class="alert alert-danger" role="alert">
@@ -273,15 +274,97 @@
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerar</button>
-                                            <button onclick="cambiarEstado(<?php echo $deta['IdDetalleProducto'];?>,<?php echo $deta['Stock'];?>);" type="button" class="btn btn-primary">Guardar</button>
+                                            <button onclick="cambiarEstado();" type="button" class="btn btn-primary">Guardar</button>
                                           </div>
-                                                </form>
+                                        </form>
                                         </div>
                                       </div>
                                     </div>
                                     <!-- Modal -->
 
-                                </div>        
+                                </div>
+                                <!-- Estado      -->
+
+
+                                <!-- Mostar Productos Anulados -->
+                                <div class="form-group col-md-3">
+                                    <!-- Large modal -->
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Productos anulados</button>
+
+                                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Productos Anulados</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <table class="table table-striped table-hover" id="tabla">
+                                              <thead>
+                                                <tr>
+                                                  <th scope="col">Producto</th>
+                                                  <th scope="col">Color</th>
+                                                  <th scope="col">Talla</th>
+                                                  <th scope="col">Cantidad</th>
+                                                  <th scope="col">Valor Unitario</th>
+                                                  <th scope="col">Observación</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <?php
+                                                    foreach ($anulados as $anu) {
+                                                ?>
+                                                <tr>
+                                                  <td><?php echo $anu['NombreProducto'];?></td>
+                                                  <td><?php echo $anu['Color'];?></td>
+                                                  <td><?php echo $anu['Talla'];?></td>
+                                                  <td><?php echo $anu['Cantidad'];?></td>
+                                                  <td>$<?php echo $anu['ValorUnitario'];?></td>
+                                                  <td><?php echo $anu['Observacion'];?></td>
+                                                </tr>
+                                                <?php   
+                                                    }
+                                                ?>
+                                              </tbody>
+                                            </table>
+
+                                           <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerar</button>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+ 
+                                </div>
+                                <!-- ostar Productos Anulados -->
+
+
+                                <!-- Anular producto venta -->
+                                <div class="modal fade" id="AnularModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Anular Producto de la Venta</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="Observacion" class="col-form-label">Escribe a continuación el por qué de la anulación de este producto:</label>
+                                            <input style="height: 98px" type="text" class="form-control" placeholder="Escribe aquí la observación" id="Observacion" name="Observacion"></input>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" id="botonConformacion" class="btn btn-primary">Enviar observación</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- Anular producto venta -->
                         </div>
 
 
@@ -309,11 +392,8 @@
 
         <script>
 
-        	function saludo(){
-        		alert("Hola, mundo");
-        	}
             function anularProductoVenta(IdDetallePedido,ValorUnitario,TotalIvaIndi,Total,TotalIva,SubTotal,IdPedido,Cantidad,IdDetalleProducto,Stock){
-                
+
                 Swal.fire({
                 title: 'Anular Producto',
                 text: "Se va a naular el producto ¿Seguro?",
@@ -326,92 +406,72 @@
                 }).then((result) => {
                 if (result.isConfirmed) {
 
-                    var resIva = TotalIva-TotalIvaIndi;
-                    TotalIva = resIva;
-                    var resTotal = SubTotal - (ValorUnitario*Cantidad);
-                    SubTotal = resTotal;
+                    $('#AnularModal').modal('show'); // Abrir
+                    const boton = document.querySelector("#botonConformacion");
 
-                    Total = TotalIva + SubTotal;
+                    boton.addEventListener("click", function(evento){
+                        $('#AnularModal').modal('hide'); // Cerrar
 
-                    var TotalStock = Cantidad+Stock;
+                        var Observacion = document.getElementById("Observacion").value;
+                        alert(Observacion);
+                        var resIva = TotalIva-TotalIvaIndi;
+                        TotalIva = resIva;
+                        var resTotal = SubTotal - (ValorUnitario*Cantidad);
+                        SubTotal = resTotal;
 
-                    var formData = new FormData();
-                    formData.append('anularProductoVenta','');
-                    formData.append('IdDetallePedido',IdDetallePedido);
-                    formData.append('TotalIva',TotalIva);
-                    formData.append('SubTotal',SubTotal);
-                    formData.append('Total',Total);
-                    formData.append('IdPedido', IdPedido);
-                    formData.append('TotalStock', TotalStock);
-                    formData.append('IdDetalleProducto', IdDetalleProducto);
-                    $.ajax({
-                        url: '../../Controller/VentasControlador/ControladorVentas.php',
-                        type: 'post',
-                        data:formData,
-                        contentType:false,
-                        processData:false,
-                        success: function(response){
-                            // alert(response);
+                        Total = TotalIva + SubTotal;
 
-                            Swal.fire({
-							  title: 'El producto ha sido Anulado.',
-							  icon: 'success',
-							  confirmButtonText: `OK`,
+                        var TotalStock = Cantidad+Stock;
 
-							}).then((result) => {
-							  /* Read more about isConfirmed, isDenied below */
-							  if (result.isConfirmed) {
-							    location.reload(); 
-							  }
-							})
-                        }
+                        var formData = new FormData();
+                        formData.append('anularProductoVenta','');
+                        formData.append('IdDetallePedido',IdDetallePedido);
+                        formData.append('TotalIva',TotalIva);
+                        formData.append('SubTotal',SubTotal);
+                        formData.append('Total',Total);
+                        formData.append('IdPedido', IdPedido);
+                        formData.append('TotalStock', TotalStock);
+                        formData.append('IdDetalleProducto', IdDetalleProducto);
+                        formData.append('Observacion',Observacion);
+                        $.ajax({
+                            url: '../../Controller/VentasControlador/ControladorVentas.php',
+                            type: 'post',
+                            data:formData,
+                            contentType:false,
+                            processData:false,
+                            success: function(response){
+                                // alert(response);
 
+                                Swal.fire({
+                                  title: 'El producto ha sido Anulado.',
+                                  icon: 'success',
+                                  confirmButtonText: `OK`,
+
+                                }).then((result) => {
+                                  /* Read more about isConfirmed, isDenied below */
+                                  if (result.isConfirmed) {
+                                    location.reload(); 
+                                  }
+                                })
+                            }
+
+                        });
                     });
-                    
                     
                   }
                 })
             }
 
-            // function factura(IdPedido){
-            // 	alert(IdPedido)
-
-            //     var formData = new FormData();
-            //     formData.append('factura','');
-            //     formData.append('IdPedido',IdPedido);
-            //     $.ajax({
-            //             url: '../../Controller/VentasControlador/ControladorVentas.php',
-            //             type: 'post',
-            //             data:formData,
-            //             contentType:false,
-            //             processData:false,
-            //             success: function(response){
-            //                 // alert(response);
-            //                 // Swal.fire(
-            //                 // 'Anulado!',
-            //                 // 'El producto ha sido Anulado.',
-            //                 // 'success'
-            //                 // );
-            //                 // location.reload();
-            //             }
-
-            //         });
-
-            // }
 
             function cambiarEstado(){
 
                 var IdEstadoPedido = document.getElementById("idEstadoPedido").value;
                 var IdPedido = document.getElementById("idPedido").value;
 
-                var TotalStock = Cantidad+Stock;
-
                 var formData = new FormData();
                 formData.append('cambiarEstado','');
                 formData.append('IdEstadoPedido',IdEstadoPedido);
                 formData.append('IdPedido',IdPedido);
-                formData.append('TotalStock', TotalStock);
-                formData.append('IdDetalleProducto', IdDetalleProducto);
                 
                 $.ajax({
                         url: '../../Controller/VentasControlador/ControladorVentas.php',
@@ -435,15 +495,9 @@
 							  }
 							})
 
-
-
                         }
                         
-
                     });
-                
-
-                // 
             }
 
             

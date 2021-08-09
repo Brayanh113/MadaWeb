@@ -1,6 +1,7 @@
 <?php
     include "../../Controller/VentasControlador/ControladorVentas.php";
     $listarVentas = $ControladorVentas -> listarVentas();
+    $listarCate = $ControladorVentas -> listarCategoria();
 ?>
 
 
@@ -122,8 +123,10 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>   
                     </div>
+
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table mr-1"></i>
@@ -206,20 +209,12 @@
             </div>
         </div>
 
-
-
-
-
     <script src="../js/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="../js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="../js/scripts.js"></script>
-        
-
     <script src="../js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="../js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="../assets/demo/datatables-demo.js"></script>
-
-    <!-- Data table plugin-->
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>

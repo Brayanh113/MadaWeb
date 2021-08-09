@@ -3,8 +3,6 @@ include "../../Model/conexion.php";
 include "../../Model/VentasModelo/ventas.php";
 include "../../Model/VentasModelo/CrudVentas.Php";
 
-
-
 class ControladorVentas{
 
 	public function listarVentas(){
@@ -12,6 +10,13 @@ class ControladorVentas{
 		$CrudVentas = new CrudVentas();
 
 		return $CrudVentas -> listarVentas();
+	}
+
+	public function listarCategoria(){
+		$CrudVentas = new CrudVentas();
+
+		return $CrudVentas -> listarCategoria();
+
 	}
 
 	public function listarVentasEnviadas(){
@@ -33,23 +38,25 @@ class ControladorVentas{
 		return $CrudVentas -> listarProductosVendidos($IdPedido);
 
 	}
+	public function listarProductosAnulados($IdPedido){
+		$CrudVentas = new CrudVentas();
 
-	public function anularProductoVenta($IdDetallePedido,$TotalIva,$SubTotal,$Total,$IdPedido,$TotalStock,$IdDetalleProducto){
+		return $CrudVentas -> listarProductosAnulados($IdPedido);
+	}
+
+	public function anularProductoVenta($IdDetallePedido,$TotalIva,$SubTotal,$Total,$IdPedido,$TotalStock,$IdDetalleProducto,$Observacion){
 		
 		$ventas = new Ventas();
 		$ventas -> setIdDetallePedido($IdDetallePedido);
-
-		$ventas2 = new Ventas();
-		$ventas2 -> setTotalIva($TotalIva);
-		$ventas2 -> setSubTotal($SubTotal);
-		$ventas2 -> setTotal($Total);
-		$ventas2 -> setIdPedido($IdPedido);
-
+		$ventas -> setObservacion($Observacion);
+		$ventas -> setTotalIva($TotalIva);
+		$ventas -> setSubTotal($SubTotal);
+		$ventas -> setTotal($Total);
+		$ventas -> setIdPedido($IdPedido);
 		$CrudVentas = new CrudVentas();
-		$CrudVentas -> preciosProductoVenta($ventas2);
+		$CrudVentas -> preciosProductoVenta($ventas);
 		$CrudVentas -> anularProductoVenta($ventas);
 		$CrudVentas -> aumentarStock($TotalStock,$IdDetalleProducto);
-
 	}
 	public function cambiarEstado($IdEstadoPedido, $IdPedido){
 		$ventas = new Ventas();
@@ -59,14 +66,10 @@ class ControladorVentas{
 
 		$CrudVentas = new CrudVentas();
 		$CrudVentas -> cambiarEstado($ventas);
-
+		$CrudVentas -> aumentarStock($TotalStock,$IdDetalleProducto);
 	}
-
-
 }
-
 $ControladorVentas = new ControladorVentas();
-
 //Redirigir
 if(isset($_POST['factura'])){
 	header('Location:../../Vista/VentasVista/factura.php?IdPedido='.$_POST['IdPedido']);
@@ -75,12 +78,9 @@ if(isset($_POST['factura'])){
 if(isset($_POST['verDetalleVenta'])){
 	header('Location:../../Vista/VentasVista/detalleVenta.php?IdPedido='.$_POST['IdPedido']);
 }
-// if(isset($_POST['editarDetalleVenta'])){
-// 	header('Location:../Vista/editarDetallePedido.php?IdDetallePedido='.$_POST['IdDetallePedido']);
-// }
 
 if(isset($_POST['anularProductoVenta'])){
-	$ControladorVentas -> anularProductoVenta($_POST['IdDetallePedido'],$_POST['TotalIva'],$_POST['SubTotal'],$_POST['Total'],$_POST['IdPedido'],$_POST['TotalStock'],$_POST['IdDetalleProducto']);
+	$ControladorVentas -> anularProductoVenta($_POST['IdDetallePedido'],$_POST['TotalIva'],$_POST['SubTotal'],$_POST['Total'],$_POST['IdPedido'],$_POST['TotalStock'],$_POST['IdDetalleProducto'],$_POST['Observacion']);
 }
 
 if(isset($_POST['cambiarEstado'])){

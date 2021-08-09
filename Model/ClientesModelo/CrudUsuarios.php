@@ -22,37 +22,7 @@ class CrudUsuarios{
 	    // $sql -> store_result();
 	    $row_cnt = $sql->num_rows;//rowCount();
 	    return $row_cnt;
-
-
 	}
-
-
-	// public function registrarUsuario($usuarios){
-	// 	$mensaje="";
-	// 	$Db = Db::Conectar();
-
-	// 	$sql = $Db -> prepare('INSERT INTO usuarios(Nombre,Apellido,Documento,Direccion,Telefono,Correo,Contrasena,Estado,IdRol)VALUES (:Nombre,:Apellido,:Documento,:Direccion,:Telefono,:Correo,:Contrasena,:Estado,:IdRol)');
-
-	// 	$sql->bindvalue('Nombre',$usuarios->getNombre());
-	// 	$sql->bindvalue('Apellido',$usuarios->getApellido());
-	// 	$sql->bindvalue('Documento',$usuarios->getDocumento());
-	// 	$sql->bindvalue('Direccion',$usuarios->getDireccion());
-	// 	$sql->bindvalue('Telefono',$usuarios->getTelefono());
-	// 	$sql->bindvalue('Correo',$usuarios->getCorreo());
-	// 	$sql->bindvalue('Contrasena',$usuarios->getContrasena());
-	// 	$sql->bindvalue('Estado',$usuarios->getEstado());
-	// 	$sql->bindvalue('IdRol',$usuarios->getIdRol());
-
-	// 	try{
-	// 		$sql -> execute();
-	// 		$mensaje = "Registro cool";
-	// 	}catch(exeption $e){
-	// 		$mensaje = $e->getMessage();
-	// 	}
-	// 	Db::CerrarConexion($Db);
-	// 	return $mensaje;
-	// }
-
 
 	public function buscarUsuario($IdUsuario){
 		$Db = Db::Conectar();

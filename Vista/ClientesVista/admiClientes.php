@@ -1,8 +1,6 @@
 <?php
     include "../../Controller/ClientesControlador/ControladorUsuarios.php";
-    $listarCliente = $ControladorUsuarios -> listarCliente();
-    
-    
+    $listarCliente = $ControladorUsuarios -> listarCliente();  
 ?>
 
 
@@ -12,7 +10,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
+        <meta name="description" content=""/>
         <meta name="author" content="" />
         <title>MADA || Administrador</title>
         <link href="../css/style.css" rel="stylesheet" />
@@ -130,91 +128,12 @@
                         <div class="card-header">
 
                             <i class="fas fa-table mr-4"></i>
-                            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> -->
-							  <!-- Nuevo Cliente -->
-							<!-- </button> -->
                             Clientes
                         </div>
                         <div>
                         	
                         </div>
-                        <div class="card-body">
-
-                   
-                   <!-- Button trigger modal -->
-				
-
-				<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Registrar Cliente</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-
-				      	<form class="form" action="../Controlador/ControladorUsuarios.php" method="POST" accept-charset="utf-8">
-				      		<div class="form-row">
-				      			<div class="form-group col-md-6">
-				      				<label for="Nombre">Nombre: </label>
-									<input type="text" class="form-control" name="Nombre" id="Nombre">
-					      		</div>
-					      		<div class="form-group col-md-6">
-					      			<label for="Apellido">Apellido: </label>
-									<input type="text" class="form-control" name="Apellido" id="Apellido">
-					      		</div>
-					      		<div class="form-group col-md-6">
-					      			<label for="Documento">Documento: </label>
-									<input type="text" class="form-control" name="Documento" id="Documento">
-					      		</div>
-					      		<div class="form-group col-md-6">
-					      			<label for="Direccion">Dirección: </label>
-									<input type="text" class="form-control" name="Direccion" id="Direccion">
-					      		</div>
-					      		<div class="form-group col-md-6">
-					      			<label for="Telefono">Telefono: </label>
-									<input type="number" class="form-control" name="Telefono" id="Telefono">
-					      		</div>
-					      		<div class="form-group col-md-6">
-					      			<label for="Correo">Correo: </label>
-									<input type="email" class="form-control" name="Correo" id="Correo">
-					      		</div>
-					      		<div class="form-group col-md-6">
-					      			<label for="Contrasena">Contraseña: </label>
-									<input type="password" class="form-control" name="Contrasena" id="Contrasena">
-					      		</div>
-					      		<div class="form-group col-md-4">
-					      			<label for="Estado">Estado: </label>
-									<select class="form-control" name="Estado" id="Estado" class="camposInputs">
-										<option value="">Seleccione</option>
-										<option value="1">Activo</option>
-										<option value="0">Inactivo</option>
-									</select>
-					      		</div>
-				      		<div >
-								<input type="hidden" class="form-control" name="IdRol" id="IdRol" value="1" placeholder="Cliente" readonly>
-				      		</div>
-				      			
-				      		</div>
-
-							
-						</form>
-				      </div>
-				      <div class="modal-footer">
-				      	<button type="submit"  class="btn btn-primary btn-lg active" id="registrarUsuario" name="registrarUsuario">Registrar</button>
-
-				        <button type="button" class="btn btn-secondary btn-lg active" data-dismiss="modal">Cerrar</button>
-				        
-				      </div>
-				    </div>
-				  </div>
-				</div> 
-
-
-                    	
+                        <div class="card-body">                    	
                     <div class="row">
                     <div class="col-md-12">
                       <div class="tile">
@@ -255,7 +174,7 @@
                                     ?>    
                                 </td>
                                 <td>
-                                    <button type="button" id="actualizarUsuario" name="actualizarUsuario" class="btn btn-primary" onclick="actualizarUsuario()">Cambar Estado</button>
+                                    <button type="button" id="actualizarUsuario" name="actualizarUsuario" class="btn btn-primary" onclick="actualizarUsuario(<?php echo $cliente['IdUsuario'];?>,<?php echo $cliente['Estado'];?>)">Cambar Estado</button>
                                 </td> 
                             </tr>
                                 <?php   
@@ -303,13 +222,6 @@
 
     <script>
         function actualizarUsuario(IdUsuario,Estado){
-
-            var formData = new FormData();
-            formData.append('actualizarUsuario','');
-            formData.append('IdUsuario',IdUsuario);
-            formData.append('Estado',Estado);
-                
-
                 Swal.fire({
                 title: 'Cambiar estado del cliente',
                 text: "Se va a cambiar estado del cliente ¿Seguro?",
@@ -328,9 +240,7 @@
                     }else{
                         $estado = 0;
                     }
-
                     Estado = $estado;
-                    
                     var formData = new FormData();
                     formData.append('actualizarUsuario','');
                     formData.append('IdUsuario',IdUsuario);
